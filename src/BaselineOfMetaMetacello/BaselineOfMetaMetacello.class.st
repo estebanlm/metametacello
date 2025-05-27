@@ -9,6 +9,6 @@ Class {
 BaselineOfMetaMetacello >> baseline: spec [
 	<baseline>
 
-	spec for: #comon do: [ 
+	spec for: #common do: [ 
 		spec package: 'MetaMetacello' ]
 ]
