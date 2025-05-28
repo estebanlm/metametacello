@@ -24,6 +24,12 @@ MetaBuilder >> baseline: aName with: aBlock [
 ]
 
 { #category : 'scripting' }
+MetaBuilder >> className: aString [
+
+	self peek className: aString
+]
+
+{ #category : 'scripting' }
 MetaBuilder >> doNotLockBaselines [
 
 	self meta doNotLockBaselines

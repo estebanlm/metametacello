@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'name',
 		'repository',
-		'loads'
+		'loads',
+		'className'
 	],
 	#category : 'MetaMetacello',
 	#package : 'MetaMetacello'
@@ -16,6 +17,18 @@ MetaBaseline class >> newName: aName [
 	^ self new name: aName
 ]
 
+{ #category : 'accessing' }
+MetaBaseline >> className [
+
+	^ className ifNil: [ 'BaselineOf', self name ]
+]
+
+{ #category : 'accessing' }
+MetaBaseline >> className: aString [
+
+	className := aString
+]
+
 { #category : 'private' }
 MetaBaseline >> forgetRepositoryIfExists [
 	
@@ -23,20 +36,27 @@ MetaBaseline >> forgetRepositoryIfExists [
 
 { #category : 'installing' }
 MetaBaseline >> load [ 
-
+	| fullBaselineName baselineName |
+	
 	self forgetRepositoryIfExists.
+	self removeBaselineIfExists.
 
+	fullBaselineName := self className.
+	baselineName := fullBaselineName allButFirst: 10.
+
+	"load"
 	Metacello new
-		baseline: self name;
+		baseline: baselineName;
 		repository: self repository;
 		ignoreImage;
 		onConflictUseIncoming;
 		onDowngradeUseIncoming;
 		load: (self loads ifNil: [ #() ]).
 		
+	"lock baselines"
 	self shouldLockBaselines ifTrue: [  
-		self lock: self name.
-		(self class environment classNamed: ('BaselineOf', self name)) project version spec
+		self lock: baselineName.
+		(self class environment classNamed: fullBaselineName) project version spec
 			projectDo: [ :each | self lock: (each projectReference className allButFirst: 10) ] 
 			packageDo: [ :each | ] 
 			groupDo: [ :each | ] ]
@@ -70,6 +90,14 @@ MetaBaseline >> name [
 MetaBaseline >> name: anObject [
 
 	name := anObject
+]
+
+{ #category : 'installing' }
+MetaBaseline >> removeBaselineIfExists [
+		
+	"remove baseline to ensure is loaded"
+	(self class environment classNamed: self className)
+		ifNotNil: [ :aClass | aClass removeFromSystem ]
 ]
 
 { #category : 'accessing' }
