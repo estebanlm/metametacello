@@ -30,6 +30,8 @@ MetaBaseline >> load [
 		baseline: self name;
 		repository: self repository;
 		ignoreImage;
+		onConflictUseIncoming;
+		onDowngradeUseIncoming;
 		load: (self loads ifNil: [ #() ]).
 		
 	self shouldLockBaselines ifTrue: [  
