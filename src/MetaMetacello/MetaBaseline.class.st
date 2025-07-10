@@ -45,13 +45,17 @@ MetaBaseline >> load [
 	baselineName := fullBaselineName allButFirst: 10.
 
 	"load"
-	Metacello new
-		baseline: baselineName;
-		repository: self repository;
-		ignoreImage;
-		onConflictUseIncoming;
-		onDowngradeUseIncoming;
-		load: (self loads ifNil: [ #() ]).
+	[ 
+		Metacello new
+			baseline: baselineName;
+			repository: self repository;
+			ignoreImage;
+			onConflictUseIncoming;
+			onDowngradeUseIncoming;
+			load: (self loads ifNil: [ #() ]). ] 
+	on: ProvideAnswerNotification 
+	do: [ :notification | 
+		notification resume: true ].
 		
 	"lock baselines"
 	self shouldLockBaselines ifTrue: [  
