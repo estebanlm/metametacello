@@ -33,7 +33,7 @@ MetaMetacello >> doNotLockBaselines [
 MetaMetacello >> initialize [ 
 
 	super initialize.
-	shouldLockBaselines := false
+	shouldLockBaselines := true
 ]
 
 { #category : 'installing' }
