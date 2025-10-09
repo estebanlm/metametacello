@@ -1,7 +1,7 @@
-Extension { #name : 'MetacelloMCBaselineProject' }
+Extension { #name : 'MetacelloBaselineProject' }
 
 { #category : '*MetaMetacello' }
-MetacelloMCBaselineProject >> lockBaselines [
+MetacelloBaselineProject >> lockBaselines [
 
 	self projectAttributes: (self projectAttributes copyWith: #lockAll)
 ]
