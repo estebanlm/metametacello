@@ -18,6 +18,12 @@ MetaBaseline class >> newName: aName [
 ]
 
 { #category : 'accessing' }
+MetaBaseline >> baseline: aString [
+
+	self className: 'BaselineOf', aString
+]
+
+{ #category : 'accessing' }
 MetaBaseline >> className [
 
 	^ className ifNil: [ 'BaselineOf', self name ]
@@ -53,7 +59,7 @@ MetaBaseline >> load [
 			onConflictUseIncoming;
 			onDowngradeUseIncoming;
 			load: (self loads ifNil: [ #() ]). ] 
-	on: ProvideAnswerNotification 
+	on: ProvideAnswerNotification, MCMergeOrLoadWarning 
 	do: [ :notification | 
 		notification resume: true ].
 		
