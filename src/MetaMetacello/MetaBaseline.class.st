@@ -66,10 +66,8 @@ MetaBaseline >> load [
 	"lock baselines"
 	self shouldLockBaselines ifTrue: [  
 		self lock: baselineName.
-		(self class environment classNamed: fullBaselineName) project version spec
-			projectDo: [ :each | self lock: (each projectReference className allButFirst: 10) ] 
-			packageDo: [ :each | ] 
-			groupDo: [ :each | ] ]
+		(self class environment classNamed: fullBaselineName) projects do: [ :each | 
+				self lock: (each projectReference className allButFirst: 10) ] ]
 ]
 
 { #category : 'accessing' }
