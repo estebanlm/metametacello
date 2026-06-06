@@ -17,6 +17,14 @@ MetaMetacello class >> load: aBlock [
 		load
 ]
 
+{ #category : 'instance-creation' }
+MetaMetacello class >> update: aBlock [
+
+	^ self new
+		with: aBlock;
+		update
+]
+
 { #category : 'baselines' }
 MetaMetacello >> baseline: spec [
 
@@ -55,6 +63,23 @@ MetaMetacello >> lockBaselines [
 MetaMetacello >> shouldLockBaselines [
 
 	^ shouldLockBaselines
+]
+
+{ #category : 'loading' }
+MetaMetacello >> update [
+	"Unlock all baselines from the Metacello registry, then load them
+	 (which locks again if shouldLockBaselines is enabled)."
+	| builder |
+	
+	builder := MetaBuilder on: self.
+	self baseline: builder.
+
+	builder elements do: [ :each |
+		Metacello new
+			baseline: each name;
+			unlock ].
+
+	builder elements do: #load
 ]
 
 { #category : 'initialization' }
